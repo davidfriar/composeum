@@ -1,0 +1,18 @@
+{
+  "name": "composeum",
+  "version": "0.1.0",
+  "description": "Composeum Web Experience Manager",
+  "scripts": {},
+  "author": "David Friar",
+  "license": "MIT",
+  "workspaces": [
+    "composeum-schema",
+    "composeum-api",
+    "composeum-client",
+    "composeum-react",
+    "composeum-demo"
+  ],
+  "devDependencies": {
+    "typescript": "^4.7.4"
+  }
+}

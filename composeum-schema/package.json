@@ -1,0 +1,34 @@
+{
+  "name": "composeum-schema",
+  "version": "0.1.0",
+  "description": "Content model schema and types for Composeum",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "npm run build-item-schema && npm run build-page-schema && rollup -c",
+    "build-item-schema": "typescript-json-schema --required --noExtraProps src/types/item.ts Item -o ./src/schemas/item.json",
+    "build-page-schema": "typescript-json-schema --required --noExtraProps src/types/page.ts Page -o ./src/schemas/page.json",
+    "preyalcpublish": "npm run build"
+
+  },
+  "author": "David Friar",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.17.9",
+    "@rollup/plugin-commonjs": "^21.1.0",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^13.2.1",
+    "@rollup/plugin-typescript": "^8.3.2",
+    "@types/estree": "^1.0.0",
+    "babel-loader": "^8.2.4",
+    "prettier": "^2.7.1",
+    "rollup": "^2.70.2",
+    "rollup-plugin-dts": "^4.2.2",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-terser": "^7.0.2",
+    "tslib": "^2.4.0",
+    "typescript": "^4.7.4",
+    "typescript-json-schema": "^0.54.0"
+  }
+}
