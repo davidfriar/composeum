@@ -1,0 +1,57 @@
+{
+  "componentType": "Page",
+  "itemId":"4564356",
+  "properties": {
+  },
+  "slots": {
+    "header":[
+      {
+        "componentType": "Navigation",
+        "itemId": "234",
+        "properties": {
+          "links": [
+            {"title":"Page1","slug": "/page1"},
+            {"title":"Page2","slug": "/page2"},
+            {"title":"Page3","slug": "/page3"}
+          ]
+        }
+      }
+    ],
+    "main": [
+      {
+        "componentType": "HeroImage",
+        "itemId": "2342234",
+        "properties": {
+          "src": "./heroimage.jpg",
+          "alt": "the big picture"
+        }
+      },
+      {
+        "componentType": "RichText",
+        "itemId": "2777234",
+        "properties": {
+          "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam venenatis nisi massa, vitae lacinia nunc gravida vitae. Vivamus pharetra nisl sed erat convallis commodo. Praesent aliquet nisi nec urna pharetra fringilla. Ut sem lacus, egestas quis tempus eu, sagittis at orci. Integer luctus quam at pulvinar pharetra. Vivamus lobortis, metus feugiat tempor tristique, metus enim viverra enim, ac consequat nunc nulla a tortor. Curabitur non diam sed libero venenatis varius sit amet eget neque. Mauris suscipit odio vel metus pulvinar, rutrum volutpat dui egestas. Quisque molestie ante massa. Ut fringilla ornare sapien, quis ullamcorper nunc pellentesque vel. Nunc elit nunc, hendrerit ut mi eu, varius pretium leo. Mauris commodo nibh vel felis dapibus tempus. Fusce sit amet molestie massa."
+        }
+      }
+    ],
+    "sidebar": [
+      {
+        "componentType": "RichText",
+        "itemId": "2777235",
+        "properties": {
+          "text": "This is the sidebar"
+        }
+      }
+    ],
+    "footer": [
+      {
+        "componentType": "Footer",
+        "itemId": "8842234",
+        "properties": {
+          "text": "This is some copy in the footer"
+        }
+      }
+    ]
+  }
+
+}

@@ -4,6 +4,7 @@ import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs"
 import { Bucket } from "aws-cdk-lib/aws-s3"
 import { Runtime } from "aws-cdk-lib/aws-lambda"
 import { LambdaRestApi } from "aws-cdk-lib/aws-apigateway"
+import { BucketDeployment, Source } from "aws-cdk-lib/aws-s3-deployment"
 
 export class ComposeumApiStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
@@ -21,6 +22,11 @@ export class ComposeumApiStack extends Stack {
     })
 
     bucket.grantReadWrite(handler)
+
+    const bucketDeploy = new BucketDeployment(this, "deploy-sample-content", {
+      sources: [Source.asset(__dirname + "/../examples")],
+      destinationBucket: bucket,
+    })
 
     const api = new LambdaRestApi(this, "composeum-api", {
       proxy: true,
