@@ -1,18 +1,21 @@
+import Link from "next/link"
+
 type NavigationProps = {
-  links: {title: string, slug: string}[]
+  links: { title: string; slug: string }[]
 }
 
-export const Navigation = ({links}:NavigationProps) => {
+export const Navigation = ({ links }: NavigationProps) => {
   return (
-    <ul>
-      { links.map((link, index) => {
-      return <li key={index}><a href={link.slug}>{link.title}</a></li>
-      }
-      )
-      }
-    </ul>
+    <nav>
+      <ul>
+        {links.map((link, index) => {
+          return (
+            <li key={index}>
+              <Link href={link.slug}>{link.title}</Link>
+            </li>
+          )
+        })}
+      </ul>
+    </nav>
   )
 }
-
-
-
