@@ -40,26 +40,27 @@ export class ComposeumClient {
     this._baseURL = new URL(appendTrailingSlash(baseURL))
   }
 
-  async getSinglePage(path: Path) {
-    return this.getPage(path, 1)
+  async preload(path: Path) {
+    await this.loadPage(path, 100)
+    return this
   }
 
-  async getPages(path: Path) {
-    return this.getPage(path, 100)
+  async getPage(path: Path) {
+    return this.loadPage(path, 1)
   }
 
   get allCachedPaths(): Path[] {
     return Object.keys(this._cache)
   }
 
-  private async getPage(path: Path, depth: number) {
+  private async loadPage(path: Path, depth: number) {
     const cleanPath = stripLeadingSlash(path)
     let page = this._cache[cleanPath]
     if (!page) {
       const url = new URL(
         `${this._baseURL.toString()}${cleanPath}?depth=${depth}`
       )
-      const results = await fetch(url)
+      const results = await fetch(url.toString())
       const json = await results.json()
       page = toPage(json)
       this.addToCache(page)

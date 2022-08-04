@@ -29,7 +29,8 @@
     "typescript-json-schema": "^0.54.0"
   },
   "dependencies": {
-    "composeum-schema": "composeum-schema"
+    "composeum-client": "^0.1.0",
+    "composeum-schema": "^0.1.0"
   },
   "peerDependencies": {
     "@types/react": "^18.0.15",

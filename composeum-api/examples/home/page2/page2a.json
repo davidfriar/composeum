@@ -1,18 +1,28 @@
 {
   "componentType": "Page",
-  "itemId":"4564356",
+  "itemId": "4564356",
   "properties": {
+    "title": "page2a"
   },
   "slots": {
-    "header":[
+    "header": [
       {
         "componentType": "Navigation",
         "itemId": "234",
         "properties": {
           "links": [
-            {"title":"Page1","slug": "/page1"},
-            {"title":"Page2","slug": "/page2"},
-            {"title":"Page3","slug": "/page3"}
+            {
+              "title": "Page1",
+              "slug": "/page1"
+            },
+            {
+              "title": "Page2",
+              "slug": "/page2"
+            },
+            {
+              "title": "Page3",
+              "slug": "/page3"
+            }
           ]
         }
       }
@@ -53,5 +63,4 @@
       }
     ]
   }
-
 }

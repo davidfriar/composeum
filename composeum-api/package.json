@@ -9,9 +9,8 @@
     "watch": "tsc -w",
     "test": "jest",
     "cdk": "cdk",
-    "showConfig" : "tsc --showConfig",
-    "showVersion" : "tsc --version"
-
+    "showConfig": "tsc --showConfig",
+    "showVersion": "tsc --version"
   },
   "devDependencies": {
     "@types/ajv": "^1.0.0",
