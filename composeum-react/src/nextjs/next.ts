@@ -1,4 +1,4 @@
-import { ComposeumClient } from "composeum-client"
+import { ComposeumClient, Page } from "composeum-client"
 import { ParsedUrlQuery } from "querystring"
 
 const stripFileExtension = (s: string) => {
@@ -48,16 +48,29 @@ const getStaticPaths = async () => {
 }
 
 const getStaticProps = async ({ params: path }: StaticPropsInput) => {
-  console.log(`getStaticProps. client: ${client} `)
   const composeumPath = appendFileExtension((path?.path as string[]).join("/"))
-  const composeumPage = await (await getClient()).getPage(composeumPath)
-  console.log(`(((((((((( Page: ${JSON.stringify(composeumPage)}`)
+  const client = await getClient()
+  const composeumPage = await client.getPage(composeumPath)
   return {
-    props: { composeumPage },
+    props: { composeumPage, paths: client.allCachedPaths },
   }
+}
+
+const getRootPage = async (): Promise<Page> => {
+  client = await getClient()
+  const path = process.env.COMPOSEUM_ROOT_PAGE
+  if (!path) {
+    throw new Error("Missing environment variable: COMPOSEUM_ROOT_PAGE")
+  }
+  const page = client.getPage(path)
+  if (!page) {
+    throw new Error("Unable to fetch the root page.")
+  }
+  return page
 }
 
 export const NextJSAdapter = {
   getStaticProps,
   getStaticPaths,
+  getRootPage,
 }

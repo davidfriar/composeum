@@ -1,4 +1,5 @@
 {
+  "plugins": [{ "name": "typescript-plugin-css-modules" }],
   "compilerOptions": {
     "target": "es6",
     "module": "esnext",

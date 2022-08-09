@@ -6,8 +6,7 @@
   "module": "dist/esm/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "rollup -c",
-    "preyalcpublish": "npm run build"
+    "build": "rollup -c"
   },
   "author": "David Friar",
   "license": "MIT",
@@ -23,14 +22,17 @@
     "rollup": "^2.70.2",
     "rollup-plugin-dts": "^4.2.2",
     "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-postcss": "^4.0.2",
     "rollup-plugin-terser": "^7.0.2",
     "tslib": "^2.4.0",
     "typescript": "^4.6.3",
-    "typescript-json-schema": "^0.54.0"
+    "typescript-json-schema": "^0.54.0",
+    "typescript-plugin-css-modules": "^3.4.0"
   },
   "dependencies": {
     "composeum-client": "^0.1.0",
-    "composeum-schema": "^0.1.0"
+    "composeum-schema": "^0.1.0",
+    "react-arborist": "^1.2.0"
   },
   "peerDependencies": {
     "@types/react": "^18.0.15",

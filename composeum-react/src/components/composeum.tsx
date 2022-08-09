@@ -11,7 +11,6 @@ type ComposeumProps = {
 }
 
 export const Composeum = ({ content, componentMap, mode }: ComposeumProps) => {
-  console.log(`In composeum component. content: ${JSON.stringify(content)}`)
   return <Container item={content} componentMap={componentMap} mode={mode} />
 }
 
