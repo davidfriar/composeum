@@ -17,6 +17,7 @@
     "@rollup/plugin-node-resolve": "^13.2.1",
     "@rollup/plugin-typescript": "^8.3.2",
     "@types/estree": "^1.0.0",
+    "@types/react-beautiful-dnd": "^13.1.2",
     "babel-loader": "^8.2.4",
     "prettier": "^2.6.2",
     "rollup": "^2.70.2",
@@ -32,7 +33,10 @@
   "dependencies": {
     "composeum-client": "^0.1.0",
     "composeum-schema": "^0.1.0",
-    "react-arborist": "^1.2.0"
+    "react-arborist": "^1.2.0",
+    "react-beautiful-dnd": "^13.1.0",
+    "react-collapse-pane": "^3.0.1",
+    "styled-components": "^5.3.5"
   },
   "peerDependencies": {
     "@types/react": "^18.0.15",

@@ -1,4 +1,6 @@
 import { Item, Slots, Slot as TSlot, ItemId } from "composeum-schema"
+import { EditableComponentWrapper } from "./editor/editableComponentWrapper"
+import { EditableSlotWrapper } from "./editor/editableSlotWrapper"
 
 import { ReactComponentMap } from "../types/componentMap"
 
@@ -10,59 +12,75 @@ type ComposeumProps = {
   mode?: Mode
 }
 export const Composeum = ({ content, componentMap, mode }: ComposeumProps) => {
-  return <Container item={content} componentMap={componentMap} mode={mode} />
+  return (
+    <Container
+      item={content}
+      componentMap={componentMap}
+      mode={mode}
+      isRoot={true}
+    />
+  )
 }
 
 type ContainerProps = {
   item: Item
+  index?: number
   componentMap: ReactComponentMap
   mode?: Mode
+  isRoot?: boolean
 }
 
 export const Container = ({
   item,
+  index = 0,
   componentMap,
   mode = "publish",
+  isRoot = false,
 }: ContainerProps) => {
   const Component = componentMap[item.componentType]
 
-  const renderSlots = (slots: Slots) => {
+  const renderSlots = (slots: Slots, itemId: ItemId) => {
     return Object.fromEntries(
-      Object.entries(slots).map(([name, value]) => [
-        name,
-        <SlotWrapper mode={mode}>
-          <Slot
-            name={name}
-            slot={value}
-            componentMap={componentMap}
-            mode={mode}
-          />
-        </SlotWrapper>,
-      ])
+      Object.entries(slots).map(([name, value]) => {
+        return [
+          name,
+          <SlotWrapper mode={mode} name={name} itemId={itemId}>
+            <Slot
+              name={name}
+              slot={value}
+              componentMap={componentMap}
+              mode={mode}
+            />
+          </SlotWrapper>,
+        ]
+      })
     )
   }
 
-  const slots = item.slots ? renderSlots(item.slots) : {}
-
-  return (
-    <Wrapper itemId={item.itemId} mode={mode}>
-      <Component {...item.properties} slots={slots} />
+  const slots = item.slots ? renderSlots(item.slots, item.itemId) : {}
+  const component = <Component {...item.properties} slots={slots} />
+  return isRoot ? (
+    component
+  ) : (
+    <Wrapper itemId={item.itemId} index={index} mode={mode}>
+      {component}
     </Wrapper>
   )
 }
 
 type WrapperProps = {
   itemId: ItemId
+  index: number
   mode: Mode
   children: JSX.Element
 }
-const Wrapper = ({ itemId, mode, children }: WrapperProps) => {
+const Wrapper = ({ itemId, index, mode, children }: WrapperProps) => {
   switch (mode) {
     case "publish":
       return children
     case "edit":
       return (
-        <EditableComponentWrapper itemId={itemId}>
+        <EditableComponentWrapper itemId={itemId} index={index}>
           {children}
         </EditableComponentWrapper>
       )
@@ -72,13 +90,19 @@ const Wrapper = ({ itemId, mode, children }: WrapperProps) => {
 type SlotWrapperProps = {
   mode: Mode
   children: JSX.Element
+  itemId: ItemId
+  name: string
 }
-const SlotWrapper = ({ mode, children }: SlotWrapperProps) => {
+const SlotWrapper = ({ mode, itemId, name, children }: SlotWrapperProps) => {
   switch (mode) {
     case "publish":
       return children
     case "edit":
-      return <EditableSlotWrapper>{children}</EditableSlotWrapper>
+      return (
+        <EditableSlotWrapper itemId={itemId} name={name}>
+          {children}
+        </EditableSlotWrapper>
+      )
   }
 }
 
@@ -96,31 +120,10 @@ const Slot = ({ name, slot, componentMap, mode }: SlotProps) => {
           mode={mode}
           key={index}
           item={item}
+          index={index}
           componentMap={componentMap}
         />
       ))}
-    </div>
-  )
-}
-
-type EditableSlotWrapperProps = {
-  children: JSX.Element
-}
-const EditableSlotWrapper = ({ children }: EditableSlotWrapperProps) => {
-  return <div className="Iamaneditslotwrapper">{children}</div>
-}
-
-type EditableComponentWrapperProps = {
-  itemId: ItemId
-  children: JSX.Element
-}
-const EditableComponentWrapper = ({
-  itemId,
-  children,
-}: EditableComponentWrapperProps) => {
-  return (
-    <div className="composeum-container" data-item-id={itemId}>
-      {children}
     </div>
   )
 }

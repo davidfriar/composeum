@@ -1,6 +1,7 @@
 import { Page } from "composeum-client"
 import { Tree, NodeRenderer } from "react-arborist"
-import { EditorAction, EditorState } from "./composeumEditor"
+import { EditorAction } from "./actions"
+import { EditorState } from "./state"
 import { Dispatch } from "react"
 
 const mapTree = (page: Page, f: (p: Page) => any) => {
@@ -38,7 +39,7 @@ type PageNavigatorProps = {
 
 export const PageNavigator = ({
   dispatch,
-  state: { rootPage },
+  state: { rootPage, currentPath },
 }: PageNavigatorProps) => {
   const treeData = mapTree(rootPage, (page) => {
     return {

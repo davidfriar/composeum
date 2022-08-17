@@ -1,6 +1,6 @@
 {
   "componentType": "Page",
-  "itemId": "4564356",
+  "itemId": "abcfcdb7-81a8-40c1-b37e-7812057c052d",
   "properties": {
     "title": "page3"
   },
@@ -8,7 +8,7 @@
     "header": [
       {
         "componentType": "Navigation",
-        "itemId": "234",
+        "itemId": "d2e1a406-d598-4272-9d98-a440c87810e6",
         "properties": {
           "links": [
             {
@@ -30,7 +30,7 @@
     "main": [
       {
         "componentType": "HeroImage",
-        "itemId": "2342234",
+        "itemId": "162e1023-11e4-4639-85c7-fae456b504f7",
         "properties": {
           "src": "./heroimage.jpg",
           "alt": "the big picture"
@@ -38,7 +38,7 @@
       },
       {
         "componentType": "RichText",
-        "itemId": "2777234",
+        "itemId": "524e24ec-c651-4cf4-8746-e0b73f01d60c",
         "properties": {
           "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam venenatis nisi massa, vitae lacinia nunc gravida vitae. Vivamus pharetra nisl sed erat convallis commodo. Praesent aliquet nisi nec urna pharetra fringilla. Ut sem lacus, egestas quis tempus eu, sagittis at orci. Integer luctus quam at pulvinar pharetra. Vivamus lobortis, metus feugiat tempor tristique, metus enim viverra enim, ac consequat nunc nulla a tortor. Curabitur non diam sed libero venenatis varius sit amet eget neque. Mauris suscipit odio vel metus pulvinar, rutrum volutpat dui egestas. Quisque molestie ante massa. Ut fringilla ornare sapien, quis ullamcorper nunc pellentesque vel. Nunc elit nunc, hendrerit ut mi eu, varius pretium leo. Mauris commodo nibh vel felis dapibus tempus. Fusce sit amet molestie massa."
         }
@@ -47,7 +47,7 @@
     "sidebar": [
       {
         "componentType": "RichText",
-        "itemId": "2777235",
+        "itemId": "b4ef7578-746d-4883-841b-b80ed05e3ad7",
         "properties": {
           "text": "This is the sidebar"
         }
@@ -56,7 +56,7 @@
     "footer": [
       {
         "componentType": "Footer",
-        "itemId": "8842234",
+        "itemId": "0361e5fa-0a55-4072-b66e-148407439181",
         "properties": {
           "text": "This is some copy in the footer"
         }
