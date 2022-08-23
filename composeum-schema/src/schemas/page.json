@@ -1,6 +1,6 @@
 {
-    "$id": "https://schemas.composeum.io/core/page",
-    "$ref": "https://schemas.composeum.io/core/page#/definitions/Page",
+    "$id": "https://schemas.composeum.io/core/Page",
+    "$ref": "https://schemas.composeum.io/core/Page#/definitions/Page",
     "$schema": "http://json-schema.org/draft-07/schema#",
     "definitions": {
         "Item": {
@@ -10,13 +10,14 @@
                     "type": "string"
                 },
                 "itemId": {
+                    "format": "uuid",
                     "type": "string"
                 },
                 "properties": {
-                    "$ref": "https://schemas.composeum.io/core/page#/definitions/Properties"
+                    "$ref": "https://schemas.composeum.io/core/Page#/definitions/Properties"
                 },
                 "slots": {
-                    "$ref": "https://schemas.composeum.io/core/page#/definitions/Slots"
+                    "$ref": "https://schemas.composeum.io/core/Page#/definitions/Slots"
                 }
             },
             "required": [
@@ -31,12 +32,12 @@
             "properties": {
                 "children": {
                     "items": {
-                        "$ref": "https://schemas.composeum.io/core/page#/definitions/Page"
+                        "$ref": "https://schemas.composeum.io/core/Page#/definitions/Page"
                     },
                     "type": "array"
                 },
                 "content": {
-                    "$ref": "https://schemas.composeum.io/core/page#/definitions/Item"
+                    "$ref": "https://schemas.composeum.io/core/Page#/definitions/Item"
                 },
                 "lastModified": {
                     "format": "date-time",
@@ -79,7 +80,7 @@
         "Slots": {
             "additionalProperties": {
                 "items": {
-                    "$ref": "https://schemas.composeum.io/core/page#/definitions/Item"
+                    "$ref": "https://schemas.composeum.io/core/Page#/definitions/Item"
                 },
                 "type": "array"
             },

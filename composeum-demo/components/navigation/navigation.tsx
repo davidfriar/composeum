@@ -19,3 +19,4 @@ export const Navigation = ({ links }: NavigationProps) => {
     </nav>
   )
 }
+export default Navigation

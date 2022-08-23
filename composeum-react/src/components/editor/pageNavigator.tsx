@@ -1,8 +1,7 @@
 import { Page } from "composeum-client"
 import { Tree, NodeRenderer } from "react-arborist"
-import { EditorAction } from "./actions"
 import { EditorState } from "./state"
-import { Dispatch } from "react"
+import { useEditorDispatch } from "./composeumEditor"
 
 const mapTree = (page: Page, f: (p: Page) => any) => {
   const result = f(page)
@@ -17,14 +16,14 @@ const pageName = (path: string) => {
 type TreeData = {
   id: string
   name: string
-  dispatch: Dispatch<EditorAction>
 }
 const TreeItem: NodeRenderer<TreeData> = ({ innerRef, styles, data }) => {
+  const dispatch = useEditorDispatch()
   return (
     <div ref={innerRef} style={styles.row}>
       <div
         style={styles.indent}
-        onClick={() => data.dispatch({ type: "setCurrentPath", path: data.id })}
+        onClick={() => dispatch({ type: "setCurrentPath", path: data.id })}
       >
         {data.name}
       </div>
@@ -34,18 +33,15 @@ const TreeItem: NodeRenderer<TreeData> = ({ innerRef, styles, data }) => {
 
 type PageNavigatorProps = {
   state: EditorState
-  dispatch: Dispatch<EditorAction>
 }
 
 export const PageNavigator = ({
-  dispatch,
   state: { rootPage, currentPath },
 }: PageNavigatorProps) => {
   const treeData = mapTree(rootPage, (page) => {
     return {
       id: page.path,
       name: pageName(page.path),
-      dispatch: dispatch,
     }
   })
   return <Tree data={treeData}>{TreeItem}</Tree>

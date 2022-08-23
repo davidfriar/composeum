@@ -11,7 +11,7 @@ type HomePageProps = {
   }
 }
 
-export const HomePage = ({
+const HomePage = ({
   title,
   slots: { header, main, sidebar, footer },
 }: HomePageProps) => {
@@ -31,3 +31,4 @@ export const HomePage = ({
     </>
   )
 }
+export default HomePage

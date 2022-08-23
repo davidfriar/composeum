@@ -12,6 +12,7 @@ export interface Slots {
 }
 
 export type Item = {
+  /** @format uuid */
   itemId: ItemId
   componentType: ComponentTypeName
   properties: Properties

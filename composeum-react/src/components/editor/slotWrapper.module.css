@@ -1,0 +1,11 @@
+.slot {
+  outline-color: blue;
+  outline-width: 2px;
+  outline-style: solid;
+  outline-offset: -2px;
+}
+
+.drag {
+  outline-width: 4px;
+  outline-offset: -4px;
+}

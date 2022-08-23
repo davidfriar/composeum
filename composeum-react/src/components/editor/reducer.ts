@@ -17,5 +17,8 @@ export const reducer = (
       )
       moveItem(action.page, action.source, action.destination, action.itemId)
       return { ...state }
+    case "editItem":
+      console.log(`The dude wants to edit a component: ${action.itemId}`)
+      return state
   }
 }

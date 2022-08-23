@@ -1,5 +1,5 @@
 {
-  "componentType": "Page",
+  "componentType": "https://schemas.composeum.io/demo/homepage",
   "itemId": "a4c0498a-012e-414e-8044-3a2dfeb4246d",
   "properties": {
     "title": "home"
@@ -7,7 +7,7 @@
   "slots": {
     "header": [
       {
-        "componentType": "Navigation",
+        "componentType": "https://schemas.composeum.io/demo/navigation",
         "itemId": "0ff8d922-d0d7-41cf-8f0d-819fe846c809",
         "properties": {
           "links": [
@@ -29,7 +29,7 @@
     ],
     "main": [
       {
-        "componentType": "HeroImage",
+        "componentType": "https://schemas.composeum.io/foundation/image",
         "itemId": "7c2ecfb1-7905-4178-b1a7-eee1a6643e37",
         "properties": {
           "src": "./heroimage.jpg",
@@ -37,7 +37,7 @@
         }
       },
       {
-        "componentType": "RichText",
+        "componentType": "https://schemas.composeum.io/foundation/text",
         "itemId": "015ae984-5e41-4468-b2af-24272c1391f6",
         "properties": {
           "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam venenatis nisi massa, vitae lacinia nunc gravida vitae. Vivamus pharetra nisl sed erat convallis commodo. Praesent aliquet nisi nec urna pharetra fringilla. Ut sem lacus, egestas quis tempus eu, sagittis at orci. Integer luctus quam at pulvinar pharetra. Vivamus lobortis, metus feugiat tempor tristique, metus enim viverra enim, ac consequat nunc nulla a tortor. Curabitur non diam sed libero venenatis varius sit amet eget neque. Mauris suscipit odio vel metus pulvinar, rutrum volutpat dui egestas. Quisque molestie ante massa. Ut fringilla ornare sapien, quis ullamcorper nunc pellentesque vel. Nunc elit nunc, hendrerit ut mi eu, varius pretium leo. Mauris commodo nibh vel felis dapibus tempus. Fusce sit amet molestie massa."
@@ -46,7 +46,7 @@
     ],
     "sidebar": [
       {
-        "componentType": "RichText",
+        "componentType": "https://schemas.composeum.io/foundation/text",
         "itemId": "152241d8-8c57-4fb6-876f-c8c1e2afaf92",
         "properties": {
           "text": "This is the sidebar"
@@ -55,7 +55,7 @@
     ],
     "footer": [
       {
-        "componentType": "Footer",
+        "componentType": "https://schemas.composeum.io/demo/footer",
         "itemId": "54656747-14cd-4dfb-a087-12b52e46d735",
         "properties": {
           "text": "This is some copy in the footer"

@@ -7,8 +7,8 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "npm run build-item-schema && npm run build-page-schema && rollup -c",
-    "build-item-schema": "npx typescript-json-schema --id https://schemas.composeum.io/core/item --required --noExtraProps src/types/item.ts Item -o ./src/schemas/item.json",
-    "build-page-schema": "npx typescript-json-schema --id https://schemas.composeum.io/core/page --required --noExtraProps src/types/page.ts Page -o ./src/schemas/page.json",
+    "build-item-schema": "npx typescript-json-schema --id https://schemas.composeum.io/core/Item --required --noExtraProps src/types/item.ts Item -o ./src/schemas/item.json",
+    "build-page-schema": "npx typescript-json-schema --id https://schemas.composeum.io/core/Page --required --noExtraProps src/types/page.ts Page -o ./src/schemas/page.json",
     "preyalcpublish": "npm run build"
 
   },

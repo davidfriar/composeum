@@ -1,24 +1,65 @@
 import styles from "./composeumEditor.module.css"
 import { Composeum } from "../composeum"
 import { Page } from "composeum-schema"
-import { ReactComponentMap } from "../../types/componentMap"
 import { PageNavigator } from "./pageNavigator"
 import { useEffect, useReducer } from "react"
 import { DragDropContext } from "react-beautiful-dnd"
 import { reducer } from "./reducer"
-import { getCurrentPage } from "./state"
+import { EditorState, getCurrentPage } from "./state"
 import { dragHandler } from "./dragHandler"
 import { Splitter } from "./splitter"
+import { EditorAction } from "./actions"
+import { Dispatch, createContext, useContext } from "react"
+import { ComposeumConfig } from "../../config"
+
+type EditorContextType =
+  | {
+      mode: "edit"
+      dispatch: Dispatch<EditorAction>
+      state: EditorState
+      config: ComposeumConfig
+    }
+  | { mode: "publish" }
+
+export const EditorContext = createContext<EditorContextType>({
+  mode: "publish",
+})
+
+export const useEditorContext = () => useContext(EditorContext)
+
+export const useEditorDispatch = () => {
+  const context = useEditorContext()
+  if (context.mode !== "edit") {
+    throw new Error("Dispatch not available except in Edit mode")
+  }
+  return context.dispatch
+}
+
+export const useCurrentPage = () => {
+  const context = useEditorContext()
+  if (context.mode !== "edit") {
+    throw new Error("State not available except in Edit mode")
+  }
+  return getCurrentPage(context.state)
+}
+
+export const useConfig = () => {
+  const context = useEditorContext()
+  if (context.mode !== "edit") {
+    throw new Error("Config not available except in Edit mode")
+  }
+  return context.config
+}
 
 type ComposeumEditorProps = {
-  componentMap: ReactComponentMap
+  config: ComposeumConfig
   rootPage: Page
   path: string
 }
 
 export const ComposeumEditor = ({
   rootPage,
-  componentMap,
+  config,
   path,
 }: ComposeumEditorProps) => {
   const initialState = { currentPath: path, rootPage: rootPage }
@@ -30,25 +71,25 @@ export const ComposeumEditor = ({
   }, [path])
 
   return (
-    <DragDropContext onDragEnd={handleDrag}>
-      <div className={styles.container}>
-        <Splitter>
-          <div className={styles.leftPanel}>
-            <PageNavigator state={state} dispatch={dispatch} />
-          </div>
-          <div className={styles.mainPanel}>
-            {page ? (
-              <Composeum
-                content={page.content}
-                componentMap={componentMap}
-                mode="edit"
-              />
-            ) : (
-              <div>Page not found</div>
-            )}
-          </div>
-        </Splitter>
-      </div>
-    </DragDropContext>
+    <EditorContext.Provider
+      value={{ mode: "edit", dispatch: dispatch, state: state, config: config }}
+    >
+      <DragDropContext onDragEnd={handleDrag}>
+        <div className={styles.container}>
+          <Splitter>
+            <div className={styles.leftPanel}>
+              <PageNavigator state={state} />
+            </div>
+            <div className={styles.mainPanel}>
+              {page ? (
+                <Composeum content={page.content} config={config} />
+              ) : (
+                <div>Page not found</div>
+              )}
+            </div>
+          </Splitter>
+        </div>
+      </DragDropContext>
+    </EditorContext.Provider>
   )
 }

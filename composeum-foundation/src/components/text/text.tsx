@@ -1,6 +1,7 @@
 export type TextProps = {
   text: string
 }
-export const Text = ({ text }: TextProps) => {
+const Text = ({ text }: TextProps) => {
   return <div>{text}</div>
 }
+export default Text

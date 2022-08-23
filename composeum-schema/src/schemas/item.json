@@ -1,6 +1,6 @@
 {
-    "$id": "https://schemas.composeum.io/core/item",
-    "$ref": "https://schemas.composeum.io/core/item#/definitions/Item",
+    "$id": "https://schemas.composeum.io/core/Item",
+    "$ref": "https://schemas.composeum.io/core/Item#/definitions/Item",
     "$schema": "http://json-schema.org/draft-07/schema#",
     "definitions": {
         "Item": {
@@ -10,13 +10,14 @@
                     "type": "string"
                 },
                 "itemId": {
+                    "format": "uuid",
                     "type": "string"
                 },
                 "properties": {
-                    "$ref": "https://schemas.composeum.io/core/item#/definitions/Properties"
+                    "$ref": "https://schemas.composeum.io/core/Item#/definitions/Properties"
                 },
                 "slots": {
-                    "$ref": "https://schemas.composeum.io/core/item#/definitions/Slots"
+                    "$ref": "https://schemas.composeum.io/core/Item#/definitions/Slots"
                 }
             },
             "required": [
@@ -52,7 +53,7 @@
         "Slots": {
             "additionalProperties": {
                 "items": {
-                    "$ref": "https://schemas.composeum.io/core/item#/definitions/Item"
+                    "$ref": "https://schemas.composeum.io/core/Item#/definitions/Item"
                 },
                 "type": "array"
             },

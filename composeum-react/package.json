@@ -31,7 +31,11 @@
     "typescript-plugin-css-modules": "^3.4.0"
   },
   "dependencies": {
+    "@jsonforms/core": "^2.5.2",
+    "@jsonforms/react": "^2.5.2",
+    "@jsonforms/vanilla-renderers": "^2.5.2",
     "composeum-client": "^0.1.0",
+    "composeum-foundation": "^0.1.0",
     "composeum-schema": "^0.1.0",
     "react-arborist": "^1.2.0",
     "react-beautiful-dnd": "^13.1.0",

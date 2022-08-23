@@ -1,5 +1,4 @@
 .container {
-  background-color: white;
   display: grid;
   grid-template-columns: 2fr 1fr;
   grid-template-areas:
@@ -9,21 +8,17 @@
 }
 
 .header {
-  background-color: green;
   grid-area: header;
 }
 
 .footer {
-  background-color: blue;
   grid-area: footer;
 }
 
 .sidebar {
-  background-color: lightblue;
   grid-area: sidebar;
 }
 
 .main {
-  background-color: lightyellow;
   grid-area: main;
 }

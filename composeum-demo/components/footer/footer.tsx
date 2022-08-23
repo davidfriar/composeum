@@ -2,9 +2,7 @@ type FooterProps = {
   text: string
 }
 
-export const Footer = ({text}:FooterProps) => {
+const Footer = ({ text }: FooterProps) => {
   return <div>{text}</div>
 }
-
-
-
+export default Footer
