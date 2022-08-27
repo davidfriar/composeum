@@ -1,12 +1,14 @@
 import { S3 } from "aws-sdk"
 import { APIGatewayEvent, APIGatewayProxyResult } from "aws-lambda"
 import Ajv from "ajv"
+import addFormats from "ajv-formats"
 import { Page, Item, ItemSchema } from "composeum-schema"
 import { Folder, FolderItem } from "./folders"
 
 const bucketName = process.env.BUCKET as string
 const s3 = new S3()
 const ajv = new Ajv()
+addFormats(ajv)
 
 const validateItemJson = ajv.compile(ItemSchema)
 

@@ -1,5 +1,5 @@
 import { ItemId } from "composeum-schema"
-import { useConfig, useCurrentPage } from "./composeumEditor"
+import { useConfig, useCurrentPage } from "./useEditorContext"
 import { findItemInPage } from "./pageutils"
 import { ComponentEditor } from "./componentEditor"
 import { getComponentByName } from "../../config"

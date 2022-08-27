@@ -1,8 +1,14 @@
-import '../styles/globals.css'
-import type { AppProps } from 'next/app'
+import "../styles/globals.css"
+import type { AppProps } from "next/app"
+import { ComposeumQueryClientProvider } from "composeum-react"
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+  console.log("In app")
+  return (
+    <ComposeumQueryClientProvider dehydratedState={pageProps.dehydratedState}>
+      <Component {...pageProps} />
+    </ComposeumQueryClientProvider>
+  )
 }
 
 export default MyApp

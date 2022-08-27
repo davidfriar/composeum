@@ -1,6 +1,6 @@
 import type { NextPage } from "next"
-import componentMap from "../components/componentMap"
 import { Composeum, Page, NextJSAdapter } from "composeum-react"
+import { config } from "../composeum-config"
 
 export const getStaticPaths = NextJSAdapter.getStaticPaths
 
@@ -13,7 +13,7 @@ type HomePageProps = {
 const ComposeumPage: NextPage<HomePageProps> = ({ composeumPage }) => {
   return (
     <div>
-      <Composeum content={composeumPage.content} componentMap={componentMap} />
+      <Composeum content={composeumPage.content} config={config} />
     </div>
   )
 }

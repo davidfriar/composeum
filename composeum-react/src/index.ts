@@ -2,10 +2,10 @@ export { Composeum } from "./components/composeum"
 export { ComposeumEditor } from "./components/editor/composeumEditor"
 export { Page } from "composeum-schema"
 export { NextJSAdapter } from "./nextjs/next"
+export { ComposeumConfig, defaultConfig } from "./config"
 export {
-  ComposeumConfig,
-  defaultConfig,
   ComposeumComponent,
   ComposeumComponentSchema,
   ComposeumComponentUISchema,
-} from "./config"
+} from "composeum-foundation"
+export { ComposeumQueryClientProvider } from "./hooks/usePage"

@@ -54,6 +54,7 @@ export const moveItem = (
   destination: ItemLocation,
   itemId: ItemId
 ): Page => {
+  // console.log(`Enter moveItem: ${JSON.stringify(page)}`)
   const sourceSlot = findSlot(page, source)
   const destinationSlot = findSlot(page, destination)
   if (sourceSlot && destinationSlot) {
@@ -65,5 +66,7 @@ export const moveItem = (
       console.log("Item not found. Ignoring action")
     }
   }
+
+  // console.log(`Leave moveItem: ${JSON.stringify(page)}`)
   return page
 }

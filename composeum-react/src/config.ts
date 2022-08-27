@@ -1,28 +1,14 @@
-import { ComponentType } from "react"
-import { JsonSchema7, UISchemaElement } from "@jsonforms/core"
-import { allComponents } from "composeum-foundation"
-export type ComposeumComponentSchema = JsonSchema7 & {
-  $id: string
-  $schema: "http://json-schema.org/draft-07/schema#"
-  properties: JsonSchema7["properties"]
-  type: "object"
-  additionalProperties: false
-  required: string[]
-}
-export type ComposeumComponentUISchema = UISchemaElement
-
-export type ComposeumComponent<P = any> = {
-  component: ComponentType<P>
-  schema: ComposeumComponentSchema
-  uiSchema?: ComposeumComponentUISchema
-}
+import { allComponents, ComposeumComponent } from "composeum-foundation"
 
 export type ComposeumConfig = {
   components: Array<ComposeumComponent>
+  apiBaseUrl: string
+  rootPage: string
 }
 
-export const defaultConfig: ComposeumConfig = {
-  components: [], //allComponents,
+export const defaultConfig: Partial<ComposeumConfig> &
+  Pick<ComposeumConfig, "components"> = {
+  components: allComponents,
 }
 
 export const getComponentByName = (config: ComposeumConfig, name: string) => {

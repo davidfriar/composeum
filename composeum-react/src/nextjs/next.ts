@@ -48,6 +48,7 @@ const getStaticPaths = async () => {
 }
 
 const getStaticProps = async ({ params: path }: StaticPropsInput) => {
+  console.log(`getStaticProps. `)
   const composeumPath = appendFileExtension((path?.path as string[]).join("/"))
   const client = await getClient()
   const composeumPage = await client.getPage(composeumPath)

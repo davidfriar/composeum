@@ -15,6 +15,7 @@ export function ComponentEditor<T = unknown>({
   data,
   setData,
 }: EditorProps<T>) {
+  console.log(`In componentEditor. schema: ${schema} data: ${data}`)
   return (
     <div>
       <JsonForms

@@ -9,8 +9,8 @@
     "composeum-schema",
     "composeum-api",
     "composeum-client",
-    "composeum-react",
     "composeum-foundation",
+    "composeum-react",
     "composeum-demo"
   ],
   "devDependencies": {

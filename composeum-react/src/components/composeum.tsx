@@ -1,42 +1,64 @@
-import { Item, Slots, Slot as TSlot, ItemId } from "composeum-schema"
-import { ComponentWrapper } from "./editor/componentWrapper"
-import { SlotWrapper } from "./editor/slotWrapper"
+import type { Item, Slots, Slot, ItemId } from "composeum-schema"
 import { getComponentByName, ComposeumConfig } from "../config"
+import {
+  useConfig,
+  useSlotWrapper,
+  useComponentWrapper,
+  ComposeumContextProvider,
+} from "../hooks/useComposeumContext"
+import { SlotWrapper, ComponentWrapper } from "../hooks/useComposeumContext"
+export { SlotWrapper, ComponentWrapper }
+import { Fragment } from "react"
+const DefaultWrapper = Fragment
 
 type ComposeumProps = {
   config: ComposeumConfig
   content: Item
+  slotWrapper?: SlotWrapper
+  componentWrapper?: ComponentWrapper
 }
-export const Composeum = ({ content, config }: ComposeumProps) => {
-  return <Container item={content} config={config} isRoot={true} />
+
+export const Composeum = ({
+  content,
+  config,
+  slotWrapper,
+  componentWrapper,
+}: ComposeumProps) => {
+  return (
+    <ComposeumContextProvider value={{ config, slotWrapper, componentWrapper }}>
+      <Container item={content} isRoot={true} />
+    </ComposeumContextProvider>
+  )
 }
 
 type ContainerProps = {
   item: Item
   index?: number
-  config: ComposeumConfig
   isRoot?: boolean
 }
 
 export const Container = ({
   item,
   index = 0,
-  config,
   isRoot = false,
 }: ContainerProps) => {
-  const Component = getComponentByName(config, item.componentType)?.component
+  const Component = getComponentByName(
+    useConfig(),
+    item.componentType
+  )?.component
   if (!Component) {
     throw new Error(`Component not found: ${item.componentType}`)
   }
 
   const renderSlots = (slots: Slots, itemId: ItemId) => {
+    const Wrapper = useSlotWrapper() ?? DefaultWrapper
     return Object.fromEntries(
       Object.entries(slots).map(([name, value]) => {
         return [
           name,
-          <SlotWrapper name={name} itemId={itemId}>
-            <Slot name={name} slot={value} config={config} />
-          </SlotWrapper>,
+          <Wrapper name={name} itemId={itemId}>
+            <Slot name={name} slot={value} />
+          </Wrapper>,
         ]
       })
     )
@@ -44,25 +66,25 @@ export const Container = ({
 
   const slots = item.slots ? renderSlots(item.slots, item.itemId) : {}
   const component = <Component {...item.properties} slots={slots} />
+  const Wrapper = useComponentWrapper() ?? DefaultWrapper
   return isRoot ? (
     component
   ) : (
-    <ComponentWrapper itemId={item.itemId} index={index}>
+    <Wrapper itemId={item.itemId} index={index}>
       {component}
-    </ComponentWrapper>
+    </Wrapper>
   )
 }
 
 type SlotProps = {
   name: string
-  slot: TSlot
-  config: ComposeumConfig
+  slot: Slot
 }
-const Slot = ({ name, slot, config }: SlotProps) => {
+const Slot = ({ name, slot }: SlotProps) => {
   return (
     <div className={`slot-${name}`}>
       {slot.map((item, index) => (
-        <Container key={index} item={item} index={index} config={config} />
+        <Container key={index} item={item} index={index} />
       ))}
     </div>
   )

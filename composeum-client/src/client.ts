@@ -35,14 +35,23 @@ const toPage = (json: unknown): Page => {
 export class ComposeumClient {
   _cache: Record<Path, Page> = {}
   _baseURL: URL
+  _cacheEnabled: boolean
 
-  constructor(baseURL: string) {
+  constructor(
+    baseURL: string,
+    options: { enableCache: boolean } = { enableCache: true }
+  ) {
     this._baseURL = new URL(appendTrailingSlash(baseURL))
+    this._cacheEnabled = options.enableCache
   }
 
   async preload(path: Path) {
     await this.loadPage(path, 100)
     return this
+  }
+
+  async getPageTree(path: Path, depth: number) {
+    return this.loadPage(path, depth)
   }
 
   async getPage(path: Path) {
@@ -55,7 +64,7 @@ export class ComposeumClient {
 
   private async loadPage(path: Path, depth: number) {
     const cleanPath = stripLeadingSlash(path)
-    let page = this._cache[cleanPath]
+    let page = this._cacheEnabled ? this._cache[cleanPath] : null
     if (!page) {
       const url = new URL(
         `${this._baseURL.toString()}${cleanPath}?depth=${depth}`
@@ -63,7 +72,9 @@ export class ComposeumClient {
       const results = await fetch(url.toString())
       const json = await results.json()
       page = toPage(json)
-      this.addToCache(page)
+      if (this._cacheEnabled) {
+        this.addToCache(page)
+      }
     }
     return page
   }

@@ -1,7 +1,7 @@
 import { Page } from "composeum-client"
 import { Tree, NodeRenderer } from "react-arborist"
 import { EditorState } from "./state"
-import { useEditorDispatch } from "./composeumEditor"
+import { useEditorDispatch } from "./useEditorContext"
 
 const mapTree = (page: Page, f: (p: Page) => any) => {
   const result = f(page)
