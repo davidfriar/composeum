@@ -1,4 +1,4 @@
-import { Droppable, DroppableId } from "react-beautiful-dnd"
+import { Droppable, DroppableId } from "@hello-pangea/dnd"
 import { ItemId } from "composeum-schema"
 import styles from "./slotWrapper.module.css"
 import { SlotWrapper } from "../composeum"

@@ -8,4 +8,6 @@ export {
   ComposeumComponentSchema,
   ComposeumComponentUISchema,
 } from "composeum-foundation"
-export { ComposeumQueryClientProvider } from "./hooks/usePage"
+export { usePage, usePageTree, fetchPage, fetchPageTree } from "./hooks/usePage"
+export { getDescendantPaths } from "./components/editor/pageutils"
+export { stringToPathArray } from "./hooks/pathutils"

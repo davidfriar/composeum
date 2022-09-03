@@ -58,6 +58,16 @@ export class ComposeumClient {
     return this.loadPage(path, 1)
   }
 
+  async savePage(page: Page) {
+    const url = new URL(`${this._baseURL}${page.path}`)
+    const result = fetch(url, {
+      method: "PUT",
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify(page.content),
+    })
+    return result
+  }
+
   get allCachedPaths(): Path[] {
     return Object.keys(this._cache)
   }
@@ -69,8 +79,12 @@ export class ComposeumClient {
       const url = new URL(
         `${this._baseURL.toString()}${cleanPath}?depth=${depth}`
       )
+      console.log(`ComposeumClient fetching url: ${url.toString()}`)
+
       const results = await fetch(url.toString())
+      console.log(`Got the results: ${results.ok} status: ${results.status}`)
       const json = await results.json()
+      console.log(`result json: ${json}`)
       page = toPage(json)
       if (this._cacheEnabled) {
         this.addToCache(page)

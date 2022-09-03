@@ -5,6 +5,6 @@ import { Navigation } from "./components/navigation"
 
 export const config: ComposeumConfig = {
   components: [...defaultConfig.components, HomePage, Footer, Navigation],
-  apiBaseUrl: process.env.COMPOSEUM_BASE_URL!,
-  rootPage: process.env.COMPOSEUM_ROOT_PAGE!,
+  apiBaseUrl: "https://ao0vwe4q3k.execute-api.eu-west-2.amazonaws.com/prod/",
+  rootPage: "home.json",
 }

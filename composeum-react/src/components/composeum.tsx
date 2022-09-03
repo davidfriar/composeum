@@ -1,18 +1,20 @@
 import type { Item, Slots, Slot, ItemId } from "composeum-schema"
-import { getComponentByName, ComposeumConfig } from "../config"
+import { getComponentByName } from "../config"
 import {
-  useConfig,
   useSlotWrapper,
   useComponentWrapper,
   ComposeumContextProvider,
 } from "../hooks/useComposeumContext"
+import { useConfig } from "../hooks/useConfig"
 import { SlotWrapper, ComponentWrapper } from "../hooks/useComposeumContext"
 export { SlotWrapper, ComponentWrapper }
-import { Fragment } from "react"
-const DefaultWrapper = Fragment
+
+const DefaultSlotWrapper: SlotWrapper = ({ children }) => <>{children}</>
+const DefaultComponentWrapper: ComponentWrapper = ({ children }) => (
+  <>{children}</>
+)
 
 type ComposeumProps = {
-  config: ComposeumConfig
   content: Item
   slotWrapper?: SlotWrapper
   componentWrapper?: ComponentWrapper
@@ -20,12 +22,11 @@ type ComposeumProps = {
 
 export const Composeum = ({
   content,
-  config,
   slotWrapper,
   componentWrapper,
 }: ComposeumProps) => {
   return (
-    <ComposeumContextProvider value={{ config, slotWrapper, componentWrapper }}>
+    <ComposeumContextProvider value={{ slotWrapper, componentWrapper }}>
       <Container item={content} isRoot={true} />
     </ComposeumContextProvider>
   )
@@ -51,7 +52,7 @@ export const Container = ({
   }
 
   const renderSlots = (slots: Slots, itemId: ItemId) => {
-    const Wrapper = useSlotWrapper() ?? DefaultWrapper
+    const Wrapper = useSlotWrapper() ?? DefaultSlotWrapper
     return Object.fromEntries(
       Object.entries(slots).map(([name, value]) => {
         return [
@@ -66,7 +67,7 @@ export const Container = ({
 
   const slots = item.slots ? renderSlots(item.slots, item.itemId) : {}
   const component = <Component {...item.properties} slots={slots} />
-  const Wrapper = useComponentWrapper() ?? DefaultWrapper
+  const Wrapper = useComponentWrapper() ?? DefaultComponentWrapper
   return isRoot ? (
     component
   ) : (

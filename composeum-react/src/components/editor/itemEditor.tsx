@@ -1,25 +1,28 @@
-import { ItemId } from "composeum-schema"
-import { useConfig, useCurrentPage } from "./useEditorContext"
+import { ItemId, Page } from "composeum-schema"
+import { useConfig } from "../../hooks/useConfig"
 import { findItemInPage } from "./pageutils"
 import { ComponentEditor } from "./componentEditor"
 import { getComponentByName } from "../../config"
+import { useEditorDispatch } from "./useEditorContext"
+import { Properties } from "composeum-schema"
 
-type ItemEditorProps = { itemId: ItemId }
-export const ItemEditor = ({ itemId }: ItemEditorProps) => {
-  const page = useCurrentPage()
-  if (!page) {
-    return null
-  }
+type ItemEditorProps = { itemId: ItemId; page: Page }
+export const ItemEditor = ({ itemId, page }: ItemEditorProps) => {
   const item = findItemInPage(page, itemId)
   if (!item) {
     return null
   }
-  const config = useConfig()
-  const component = getComponentByName(config, item.componentType)
+  const component = getComponentByName(useConfig(), item.componentType)
   if (!component) {
     throw new Error(`Cannot find component with name: ${item.componentType}`)
   }
-  const setData = (_x: any) => null // should we have local state here?
+  const dispatch = useEditorDispatch()
+  const setData = (props: Properties) =>
+    dispatch({
+      type: "updateItem",
+      itemId: item.itemId,
+      properties: props,
+    })
 
   return (
     <ComponentEditor

@@ -1,4 +1,4 @@
-import { ItemId, Page } from "composeum-schema"
+import { ItemId, Page, Properties } from "composeum-schema"
 
 export type EditorAction =
   | SetCurrentPathAction
@@ -9,6 +9,20 @@ export interface SetCurrentPathAction {
   type: "setCurrentPath"
   path: string
 }
+
+export interface EditItemAction {
+  type: "editItem"
+  itemId: ItemId
+}
+
+export type PageAction = UpdateItemAction | DeleteDraft
+
+export interface UpdateItemAction {
+  type: "updateItem"
+  itemId: ItemId
+  properties: Properties
+}
+
 export interface MoveItemAction {
   type: "moveItem"
   page: Page
@@ -17,7 +31,6 @@ export interface MoveItemAction {
   destination: { itemId: ItemId; slotName: string; index: number }
 }
 
-export interface EditItemAction {
-  type: "editItem"
-  itemId: ItemId
+export interface DeleteDraft {
+  type: "deleteDraft"
 }

@@ -1,64 +1,77 @@
 import styles from "./composeumEditor.module.css"
 import { Composeum } from "../composeum"
-import { Page } from "composeum-schema"
 import { PageNavigator } from "./pageNavigator"
 import { useEffect, useReducer } from "react"
-import { DragDropContext } from "react-beautiful-dnd"
+import { DragDropContext } from "@hello-pangea/dnd"
 import { reducer } from "./reducer"
 import { dragHandler } from "./dragHandler"
 import { Splitter } from "./splitter"
 import { EditorContextProvider } from "./useEditorContext"
-import { ComposeumConfig } from "../../config"
 import { ItemEditor } from "./itemEditor"
 import { EditableComponentWrapper } from "./componentWrapper"
 import { EditableSlotWrapper } from "./slotWrapper"
-import { getCurrentPage } from "./state"
+import { usePageDraft } from "../../hooks/usePage"
+import useCombinedReducers from "../../hooks/useCombinedReducers"
+import { Page } from "composeum-schema"
+import { EditorState } from "./state"
 
 type ComposeumEditorProps = {
-  config: ComposeumConfig
-  rootPage: Page
   path: string
 }
 
-export const ComposeumEditor = ({
-  rootPage,
-  config,
-  path,
-}: ComposeumEditorProps) => {
-  const initialState = { currentPath: path, rootPage: rootPage, editing: null }
-  const [state, dispatch] = useReducer(reducer, initialState)
-  const page = getCurrentPage(state)
-  const handleDrag = page ? dragHandler(page, dispatch) : () => null
+export const ComposeumEditor = ({ path }: ComposeumEditorProps) => {
+  const initialState = { currentPath: path, editing: null }
+  const [editorState, editorDispatch] = useReducer(reducer, initialState)
+  const {
+    save,
+    queryResult,
+    draft,
+    dispatch: draftDispatch,
+  } = usePageDraft(editorState.currentPath)
+  const [state, dispatch] = useCombinedReducers<{
+    editor: EditorState
+    page: Page | undefined
+  }>({
+    editor: [editorState, editorDispatch],
+    page: [draft, draftDispatch],
+  })
+
   useEffect(() => {
     dispatch({ type: "setCurrentPath", path: path })
   }, [path])
 
-  return (
-    <EditorContextProvider
-      value={{ dispatch: dispatch, state: state, config: config }}
-    >
-      <DragDropContext onDragEnd={handleDrag}>
-        <div className={styles.container}>
-          <Splitter>
-            <div className={styles.leftPanel}>
-              <PageNavigator state={state} />
-              {state.editing ? <ItemEditor itemId={state.editing} /> : null}
-            </div>
-            <div className={styles.mainPanel}>
-              {page ? (
+  if (queryResult.isError) {
+    return <div>Editor could not fetch page</div>
+  }
+  if (queryResult.isLoading) {
+    return <div>Loading</div>
+  }
+  if (draft) {
+    const handleDrag = dragHandler(draft, dispatch)
+    return (
+      <EditorContextProvider value={{ dispatch: dispatch, state: state }}>
+        <DragDropContext onDragEnd={handleDrag}>
+          <div className={styles.container}>
+            <Splitter>
+              <div className={styles.leftPanel}>
+                <PageNavigator />
+                {state.editor.editing ? (
+                  <ItemEditor page={draft} itemId={state.editor.editing} />
+                ) : null}
+                <button onClick={() => save()}>Save</button>
+              </div>
+              <div className={styles.mainPanel}>
                 <Composeum
-                  content={page.content}
-                  config={config}
+                  content={draft.content}
                   slotWrapper={EditableSlotWrapper}
                   componentWrapper={EditableComponentWrapper}
                 />
-              ) : (
-                <div>Page not found</div>
-              )}
-            </div>
-          </Splitter>
-        </div>
-      </DragDropContext>
-    </EditorContextProvider>
-  )
+              </div>
+            </Splitter>
+          </div>
+        </DragDropContext>
+      </EditorContextProvider>
+    )
+  }
+  return null
 }

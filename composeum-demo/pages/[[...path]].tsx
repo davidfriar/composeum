@@ -1,19 +1,24 @@
 import type { NextPage } from "next"
-import { Composeum, Page, NextJSAdapter } from "composeum-react"
+import { Composeum, NextJSAdapter } from "composeum-react"
 import { config } from "../composeum-config"
+import { usePage } from "composeum-react"
 
-export const getStaticPaths = NextJSAdapter.getStaticPaths
+export const getStaticPaths = NextJSAdapter.getStaticPathsForPages(config)
 
-export const getStaticProps = NextJSAdapter.getStaticProps
+export const getStaticProps = NextJSAdapter.getStaticPropsForPage(config)
 
 type HomePageProps = {
-  composeumPage: Page
+  path: string
 }
+const ComposeumPage: NextPage<HomePageProps> = ({ path }) => {
+  const { error, data } = usePage(path)
 
-const ComposeumPage: NextPage<HomePageProps> = ({ composeumPage }) => {
+  if (error) {
+    return <div>Problem fetching page: {JSON.stringify(error)}</div>
+  }
   return (
     <div>
-      <Composeum content={composeumPage.content} config={config} />
+      <Composeum content={data?.content!} />
     </div>
   )
 }

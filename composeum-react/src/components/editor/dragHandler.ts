@@ -1,6 +1,6 @@
 import { EditorAction } from "./actions"
 import { Dispatch } from "react"
-import { OnDragEndResponder } from "react-beautiful-dnd"
+import { OnDragEndResponder } from "@hello-pangea/dnd"
 import { fromDroppableId } from "./slotWrapper"
 import { Page } from "composeum-schema"
 

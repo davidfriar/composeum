@@ -1,7 +1,7 @@
 import { Page } from "composeum-client"
 import { Tree, NodeRenderer } from "react-arborist"
-import { EditorState } from "./state"
 import { useEditorDispatch } from "./useEditorContext"
+import { usePageTree } from "../../hooks/usePage"
 
 const mapTree = (page: Page, f: (p: Page) => any) => {
   const result = f(page)
@@ -17,27 +17,29 @@ type TreeData = {
   id: string
   name: string
 }
+
 const TreeItem: NodeRenderer<TreeData> = ({ innerRef, styles, data }) => {
   const dispatch = useEditorDispatch()
+  const handleclick = () => {
+    dispatch({ type: "setCurrentPath", path: data.id })
+    dispatch({ type: "deleteDraft" })
+  }
   return (
     <div ref={innerRef} style={styles.row}>
-      <div
-        style={styles.indent}
-        onClick={() => dispatch({ type: "setCurrentPath", path: data.id })}
-      >
+      <div style={styles.indent} onClick={handleclick}>
         {data.name}
       </div>
     </div>
   )
 }
 
-type PageNavigatorProps = {
-  state: EditorState
-}
+export const PageNavigator = () => {
+  const { error, data } = usePageTree()
 
-export const PageNavigator = ({
-  state: { rootPage, currentPath },
-}: PageNavigatorProps) => {
+  if (error) {
+    return <div>No page tree data</div>
+  }
+  const rootPage = data!
   const treeData = mapTree(rootPage, (page) => {
     return {
       id: page.path,

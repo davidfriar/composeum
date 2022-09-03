@@ -1,13 +1,13 @@
 import { JsonSchema, UISchemaElement } from "@jsonforms/core"
 import { vanillaCells, vanillaRenderers } from "@jsonforms/vanilla-renderers"
 import { JsonForms } from "@jsonforms/react"
-import { Dispatch, SetStateAction } from "react"
+import { Dispatch } from "react"
 
 type EditorProps<T> = {
   schema: JsonSchema
   uiSchema?: UISchemaElement
   data: T
-  setData: Dispatch<SetStateAction<T>>
+  setData: Dispatch<T>
 }
 export function ComponentEditor<T = unknown>({
   schema,
@@ -15,7 +15,6 @@ export function ComponentEditor<T = unknown>({
   data,
   setData,
 }: EditorProps<T>) {
-  console.log(`In componentEditor. schema: ${schema} data: ${data}`)
   return (
     <div>
       <JsonForms

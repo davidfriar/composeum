@@ -1,4 +1,4 @@
-import { Draggable } from "react-beautiful-dnd"
+import { Draggable } from "@hello-pangea/dnd"
 import styles from "./componentWrapper.module.css"
 import { useEditorContext } from "./useEditorContext"
 import type { ComponentWrapper } from "../composeum"

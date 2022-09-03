@@ -1,4 +1,5 @@
-import { Page, Slot, Item, ItemId } from "composeum-schema"
+import { Page, Slot, Item, ItemId, Properties } from "composeum-schema"
+import * as R from "ramda"
 
 export const findPage = (parentPage: Page, path: string): Page | null => {
   if (parentPage.path === path) {
@@ -40,6 +41,50 @@ const findItemInSlot = (slot: Slot, itemId: ItemId): Item | null => {
   }
   return null
 }
+
+export type ItemPath = Array<string | number>
+export const findItemPathInPage = (
+  page: Page,
+  itemId: ItemId
+): ItemPath | null => {
+  return findItemPath(page.content, itemId, ["content"])
+}
+
+const findItemPath = (
+  item: Item,
+  itemId: ItemId,
+  path: ItemPath = []
+): ItemPath | null => {
+  if (item.itemId === itemId) {
+    return path
+  }
+  for (const [key, value] of Object.entries(item.slots || {})) {
+    const result = findItemPathInSlot(
+      value,
+      itemId,
+      path.concat(["slots"], key)
+    )
+    if (result) {
+      return result
+    }
+  }
+  return null
+}
+
+const findItemPathInSlot = (
+  slot: Slot,
+  itemId: ItemId,
+  path: ItemPath
+): ItemPath | null => {
+  for (let i = 0; i < slot.length; i++) {
+    const result = findItemPath(slot[i], itemId, path.concat(i))
+    if (result) {
+      return result
+    }
+  }
+  return null
+}
+
 export type SlotLocation = { itemId: ItemId; slotName: string }
 const findSlot = (page: Page, location: SlotLocation): Slot | null => {
   const slots = findItemInPage(page, location.itemId)?.slots
@@ -54,7 +99,6 @@ export const moveItem = (
   destination: ItemLocation,
   itemId: ItemId
 ): Page => {
-  // console.log(`Enter moveItem: ${JSON.stringify(page)}`)
   const sourceSlot = findSlot(page, source)
   const destinationSlot = findSlot(page, destination)
   if (sourceSlot && destinationSlot) {
@@ -67,6 +111,29 @@ export const moveItem = (
     }
   }
 
-  // console.log(`Leave moveItem: ${JSON.stringify(page)}`)
   return page
+}
+
+export const getDescendantPaths = (page: Page): string[] => {
+  if (page.children) {
+    return [page.path].concat(
+      ...page.children.map((child) => getDescendantPaths(child))
+    )
+  } else {
+    return [page.path]
+  }
+}
+
+export const updateItem = (
+  page: Page,
+  itemId: ItemId,
+  properties: Properties
+): Page => {
+  const itemPath = findItemPathInPage(page, itemId)
+  if (!itemPath) {
+    return page
+  }
+  const lens = R.lensPath(itemPath.concat(["properties"]))
+  const newPage = R.set(lens, properties, page)
+  return newPage
 }

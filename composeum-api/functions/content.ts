@@ -21,11 +21,25 @@ export const main = async (
         return await handleGet(event)
       case "PUT":
         return await handlePut(event)
+      case "OPTIONS":
+        return await handleOptions(event)
       default:
         return await handleOther(event)
     }
   } catch (error) {
     return handleError(error)
+  }
+}
+
+const handleOptions = async (event: APIGatewayEvent) => {
+  return {
+    statusCode: 200,
+    headers: {
+      "Access-Control-Allow-Headers": "Content-Type",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "OPTIONS,PUT,GET",
+    },
+    body: "OK",
   }
 }
 
@@ -47,6 +61,10 @@ const handlePut = async (
     .promise()
   return {
     statusCode: 200,
+    headers: {
+      "Access-Control-Allow-Headers": "Content-Type",
+      "Access-Control-Allow-Origin": "*",
+    },
     body: JSON.stringify(result),
   }
 }
@@ -85,7 +103,10 @@ const handleGetFolder = async (
   const folder = await getFolder(path, depth)
   return {
     statusCode: 200,
-    headers: {},
+    headers: {
+      "Access-Control-Allow-Headers": "Content-Type",
+      "Access-Control-Allow-Origin": "*",
+    },
     body: JSON.stringify(folder),
   }
 }
@@ -115,7 +136,10 @@ const handleGetPage = async (
   const page = await getPage(path, depth)
   return {
     statusCode: 200,
-    headers: {},
+    headers: {
+      "Access-Control-Allow-Headers": "Content-Type",
+      "Access-Control-Allow-Origin": "*",
+    },
     body: JSON.stringify(page),
   }
 }

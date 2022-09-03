@@ -1,23 +1,16 @@
-import type { NextPage, GetStaticProps } from "next"
-import { ComposeumEditor, Page, NextJSAdapter } from "composeum-react"
+import type { NextPage } from "next"
+import { ComposeumEditor, NextJSAdapter } from "composeum-react"
 import { useRouter } from "next/router"
 import { config } from "../composeum-config"
 
-export const getStaticProps: GetStaticProps = async () => {
-  const page = await NextJSAdapter.getRootPage()
-  return { props: { rootPage: page } }
-}
+export const getStaticProps = NextJSAdapter.getStaticPropsForEditor(config)
 
-type EditPageProps = {
-  rootPage: Page
-}
-
-const EditPage: NextPage<EditPageProps> = ({ rootPage }) => {
+const EditPage: NextPage = () => {
   const router = useRouter()
-  const path = (router.query.path as string) || ""
+  const path = (router.query.path as string) || config.rootPage
   return (
     <div>
-      <ComposeumEditor rootPage={rootPage} path={path} config={config} />
+      <ComposeumEditor path={path} />
     </div>
   )
 }

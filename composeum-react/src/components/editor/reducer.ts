@@ -20,5 +20,7 @@ export const reducer = (
     case "editItem":
       console.log(`The dude wants to edit a component: ${action.itemId}`)
       return { ...state, editing: action.itemId }
+    default:
+      return state
   }
 }
