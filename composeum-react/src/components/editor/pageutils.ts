@@ -1,5 +1,5 @@
 import { Page, Slot, Item, ItemId, Properties } from "composeum-schema"
-import * as R from "ramda"
+import { pipe, lensPath, view, over, insert, remove, set } from "ramda"
 
 export const findPage = (parentPage: Page, path: string): Page | null => {
   if (parentPage.path === path) {
@@ -91,6 +91,13 @@ const findSlot = (page: Page, location: SlotLocation): Slot | null => {
   return slots ? slots[location.slotName] : null
 }
 
+type SlotPath = Array<string | number>
+const findSlotPath = (page: Page, location: SlotLocation): SlotPath | null => {
+  const { slotName, itemId } = location
+  const itemPath = findItemPathInPage(page, itemId)
+  return itemPath ? itemPath.concat(["slots"], [slotName]) : null
+}
+
 export type ItemLocation = { itemId: ItemId; slotName: string; index: number }
 
 export const moveItem = (
@@ -99,13 +106,19 @@ export const moveItem = (
   destination: ItemLocation,
   itemId: ItemId
 ): Page => {
-  const sourceSlot = findSlot(page, source)
-  const destinationSlot = findSlot(page, destination)
-  if (sourceSlot && destinationSlot) {
-    const item = sourceSlot[source.index]
+  const sourceSlotPath = findSlotPath(page, source)
+  const destinationSlotPath = findSlotPath(page, destination)
+  if (sourceSlotPath && destinationSlotPath) {
+    const sourceLens = lensPath(sourceSlotPath)
+    const destinationLens = lensPath(destinationSlotPath)
+    const itemPath = sourceSlotPath.concat([source.index])
+    const itemLens = lensPath(itemPath)
+    const item = view(itemLens, page)
     if (item?.itemId === itemId) {
-      sourceSlot.splice(source.index, 1)
-      destinationSlot.splice(destination.index, 0, item)
+      return pipe(
+        over(sourceLens, remove(source.index, 1)),
+        over(destinationLens, insert(destination.index, item))
+      )(page)
     } else {
       console.log("Item not found. Ignoring action")
     }
@@ -133,7 +146,7 @@ export const updateItem = (
   if (!itemPath) {
     return page
   }
-  const lens = R.lensPath(itemPath.concat(["properties"]))
-  const newPage = R.set(lens, properties, page)
+  const lens = lensPath(itemPath.concat(["properties"]))
+  const newPage = set(lens, properties, page)
   return newPage
 }

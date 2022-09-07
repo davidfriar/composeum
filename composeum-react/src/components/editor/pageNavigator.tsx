@@ -2,6 +2,7 @@ import { Page } from "composeum-client"
 import { Tree, NodeRenderer } from "react-arborist"
 import { useEditorDispatch } from "./useEditorContext"
 import { usePageTree } from "../../hooks/usePage"
+import Link from "next/link"
 
 const mapTree = (page: Page, f: (p: Page) => any) => {
   const result = f(page)
@@ -22,12 +23,11 @@ const TreeItem: NodeRenderer<TreeData> = ({ innerRef, styles, data }) => {
   const dispatch = useEditorDispatch()
   const handleclick = () => {
     dispatch({ type: "setCurrentPath", path: data.id })
-    dispatch({ type: "deleteDraft" })
   }
   return (
     <div ref={innerRef} style={styles.row}>
-      <div style={styles.indent} onClick={handleclick}>
-        {data.name}
+      <div style={styles.indent}>
+        <Link href={`edit?path=${data.id}`}>{data.name}</Link>
       </div>
     </div>
   )

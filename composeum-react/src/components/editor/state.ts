@@ -1,6 +1,8 @@
-import { ItemId } from "composeum-schema"
+import { ItemId, Page } from "composeum-schema"
 
 export type EditorState = {
   currentPath: string
-  editing: ItemId | null
+  selectedItem?: ItemId
+  draft?: Page
+  originalPage?: Page
 }

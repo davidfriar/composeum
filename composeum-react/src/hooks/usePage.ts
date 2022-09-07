@@ -9,9 +9,9 @@ import {
   normalisePathString,
 } from "./pathutils"
 import { useReactQueryAutoSync } from "use-react-query-auto-sync"
-import { PageAction } from "../components/editor/actions"
-import { pageReducer } from "../components/editor/pageReducer"
+import { EditorAction } from "../components/editor/actions"
 import { Dispatch } from "react"
+import { EditorState } from "../components/editor/state"
 
 export const fetchPage = (config: ComposeumConfig, path: string) => {
   return async () => {
@@ -54,12 +54,18 @@ export const usePageTree = () => {
   return useQuery(["PageTree"], queryFn)
 }
 
-export const usePageDraft = (pathString: string) => {
-  const queryFn = fetchPage(useConfig(), normalisePathString(pathString))
-  const mutationFn = savePage(useConfig())
-  const queryKey = ["Pages", ...stringToPathArray(pathString)]
+export const usePageDraft = (
+  state: EditorState,
+  dispatch: Dispatch<EditorAction>
+) => {
+  const pathString = normalisePathString(state.currentPath)
+  const pathArray = stringToPathArray(state.currentPath)
+  const config = useConfig()
+  const queryFn = fetchPage(config, pathString)
+  const mutationFn = savePage(config)
+  const queryKey = ["Pages", ...pathArray]
 
-  const { draft, setDraft, queryResult, save } = useReactQueryAutoSync({
+  const { draft, queryResult, save } = useReactQueryAutoSync({
     queryOptions: {
       queryKey: queryKey,
       queryFn: queryFn,
@@ -69,13 +75,16 @@ export const usePageDraft = (pathString: string) => {
       mutationKey: queryKey,
     },
     autoSaveOptions: { wait: 5000 },
+    draftProvider: {
+      draft: state.draft,
+      setDraft: (draft: Page | undefined) =>
+        dispatch({ type: "setDraft", page: draft }),
+    },
   })
 
-  const dispatch: Dispatch<PageAction> = (action: PageAction) => {
-    if (draft) {
-      setDraft(pageReducer(draft, action))
-    }
+  if (!state.originalPage && queryResult.data) {
+    dispatch({ type: "setOriginalPage", page: queryResult.data })
   }
 
-  return { draft, dispatch, queryResult, save }
+  return { draft, queryResult, save }
 }

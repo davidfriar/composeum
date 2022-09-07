@@ -11,33 +11,22 @@ import { ItemEditor } from "./itemEditor"
 import { EditableComponentWrapper } from "./componentWrapper"
 import { EditableSlotWrapper } from "./slotWrapper"
 import { usePageDraft } from "../../hooks/usePage"
-import useCombinedReducers from "../../hooks/useCombinedReducers"
-import { Page } from "composeum-schema"
-import { EditorState } from "./state"
 
 type ComposeumEditorProps = {
   path: string
 }
 
 export const ComposeumEditor = ({ path }: ComposeumEditorProps) => {
-  const initialState = { currentPath: path, editing: null }
-  const [editorState, editorDispatch] = useReducer(reducer, initialState)
-  const {
-    save,
-    queryResult,
-    draft,
-    dispatch: draftDispatch,
-  } = usePageDraft(editorState.currentPath)
-  const [state, dispatch] = useCombinedReducers<{
-    editor: EditorState
-    page: Page | undefined
-  }>({
-    editor: [editorState, editorDispatch],
-    page: [draft, draftDispatch],
-  })
+  const initialState = { currentPath: path, editing: null, shouldSave: false }
+  const [state, dispatch] = useReducer(reducer, initialState)
+  const { queryResult, save } = usePageDraft(state, dispatch)
+
+  // console.log(`ComposeumEditor. state=${JSON.stringify(state)}`)
+  console.log(`ComposeumEditor. rendering`)
 
   useEffect(() => {
     dispatch({ type: "setCurrentPath", path: path })
+    return () => save()
   }, [path])
 
   if (queryResult.isError) {
@@ -46,8 +35,9 @@ export const ComposeumEditor = ({ path }: ComposeumEditorProps) => {
   if (queryResult.isLoading) {
     return <div>Loading</div>
   }
-  if (draft) {
-    const handleDrag = dragHandler(draft, dispatch)
+  const page = state.draft ?? queryResult.data
+  if (page) {
+    const handleDrag = dragHandler(page, dispatch)
     return (
       <EditorContextProvider value={{ dispatch: dispatch, state: state }}>
         <DragDropContext onDragEnd={handleDrag}>
@@ -55,14 +45,13 @@ export const ComposeumEditor = ({ path }: ComposeumEditorProps) => {
             <Splitter>
               <div className={styles.leftPanel}>
                 <PageNavigator />
-                {state.editor.editing ? (
-                  <ItemEditor page={draft} itemId={state.editor.editing} />
+                {state.selectedItem ? (
+                  <ItemEditor page={page} itemId={state.selectedItem} />
                 ) : null}
-                <button onClick={() => save()}>Save</button>
               </div>
               <div className={styles.mainPanel}>
                 <Composeum
-                  content={draft.content}
+                  content={page.content}
                   slotWrapper={EditableSlotWrapper}
                   componentWrapper={EditableComponentWrapper}
                 />

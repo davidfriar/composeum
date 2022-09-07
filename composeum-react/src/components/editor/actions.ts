@@ -4,6 +4,10 @@ export type EditorAction =
   | SetCurrentPathAction
   | MoveItemAction
   | EditItemAction
+  | UpdateItemAction
+  | DeleteDraft
+  | SetDraft
+  | SetOriginalPage
 
 export interface SetCurrentPathAction {
   type: "setCurrentPath"
@@ -14,8 +18,6 @@ export interface EditItemAction {
   type: "editItem"
   itemId: ItemId
 }
-
-export type PageAction = UpdateItemAction | DeleteDraft
 
 export interface UpdateItemAction {
   type: "updateItem"
@@ -33,4 +35,14 @@ export interface MoveItemAction {
 
 export interface DeleteDraft {
   type: "deleteDraft"
+}
+
+export interface SetDraft {
+  type: "setDraft"
+  page: Page | undefined
+}
+
+export interface SetOriginalPage {
+  type: "setOriginalPage"
+  page: Page | undefined
 }
